@@ -17,7 +17,7 @@ namespace FirstTaskProj.Repositories
             return Context.Set<TDBModel>().ToList<TDBModel>();
         }
 
-        public TDBModel Get (int id)
+        public TDBModel Get (Guid id)
         {
             return Context.Set<TDBModel>().FirstOrDefault(m => m.Id == id);
         }
@@ -41,7 +41,7 @@ namespace FirstTaskProj.Repositories
             return modelToUpdate;
         }
 
-        public void Delete(int id)
+        public void Delete(Guid id)
         {
             var modelToDelete = Context.Set<TDBModel>().FirstOrDefault(m => m.Id == id);
             Context.Set<TDBModel>().Remove(modelToDelete);

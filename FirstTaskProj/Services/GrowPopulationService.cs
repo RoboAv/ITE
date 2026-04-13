@@ -10,8 +10,16 @@ namespace FirstTaskProj.Services
         private IBaseRepository<Region> Regions;
         private IBaseRepository<City> Cities;
 
-        public void GrowPopulation(BaseModel bm)
+        public void GrowPopulation()
         {
+            var newId = Guid.NewGuid();
+            var rand = new Random();
+            Cities.Create(new City
+            {
+                Id = newId,
+                Name = $"City {rand.Next()}",
+                CityPopulation = rand.Next()
+            });
         }
     }
 }

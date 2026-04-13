@@ -4,6 +4,6 @@ namespace FirstTaskProj.Services
 {
     public interface IGrowPopulationService
     {
-        public void GrowPopulation(BaseModel model);
+        public void GrowPopulation();
     }
 }

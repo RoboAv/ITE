@@ -1,11 +1,13 @@
-﻿namespace FirstTaskProj.Repositories
+﻿using FirstTaskProj.Models;
+
+namespace FirstTaskProj.Repositories
 {
-    public interface IBaseRepository <BaseModel>
+    public interface IBaseRepository <TDBModel> where TDBModel : BaseModel
     {
-        public List <BaseModel> GetAll ();
-        public BaseModel Get (int id);
-        public BaseModel Create(BaseModel baseModel);
-        public BaseModel Update(BaseModel baseModel);
-        public void Delete (int id);
+        public List <TDBModel> GetAll ();
+        public TDBModel Get (Guid id);
+        public TDBModel Create(TDBModel baseModel);
+        public TDBModel Update(TDBModel baseModel);
+        public void Delete (Guid id);
     }
 }
