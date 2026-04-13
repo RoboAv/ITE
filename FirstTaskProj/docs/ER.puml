@@ -1,0 +1,44 @@
+@startuml ERD
+
+skinparam linetype ortho
+
+!define Table(name,desc) class name as "desc" << (T,#FFAAAA) >>
+!define primary_key(x) <b>PK</b>    x
+!define foreign_key(x) <b>FK</b>    x
+!define not_null(x) <u>x</u>
+hide methods
+hide stereotypes
+
+entity "Country" {
+    primary_key(countryId) INTEGER
+    --
+    countryPopulation : Integer
+    countryBudget : Integer
+    countryLeader : string
+}
+
+entity "Region" {
+    primary_key(regionId) : Integer
+    --
+    foreign_key(countryId) : Integer
+    regionPopulation : Integer
+    regionBudget : Integer
+    regionLeader : string
+}
+
+entity "City" {
+    primary_key(cityId) : Integer
+    --
+    foreign_key(regionId) : Integer
+    cityPopulation : Integer
+    cityBudget : Integer
+    cityLeader : string
+}
+
+' Country ||--|{ Country 
+Country ||--|{ Region
+
+Region  ||--|{ City
+
+
+@enduml
