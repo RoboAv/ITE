@@ -10,7 +10,7 @@ namespace FirstTaskProj.Services
         private IBaseRepository<Region> Regions;
         private IBaseRepository<City> Cities;
 
-        public void RenameCountry(int id, string newName)
+        public void GrowPopulation(BaseModel bm)
         {
         }
     }
