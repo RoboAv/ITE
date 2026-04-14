@@ -43,7 +43,7 @@ namespace FirstTaskProj.Database
         public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options)
         {
             //Database.EnsureDeleted();
-            Database.EnsureCreated();
+            //Database.EnsureCreated();
         }
     }
 }

@@ -1,0 +1,24 @@
+@startuml
+
+left to right direction
+
+
+actor User as user
+
+package API {
+    usecase get as "
+    GET /api/Main/{modele}
+    ..
+    GET request that returns all objects of {modele}.
+    " 
+    usecase getId as "
+    GET /api/Main/{modele}/{id}
+    ..
+    GET request that returns an object of {modele} by {id}.
+    "
+}
+
+user --> get
+user --> getId
+
+@enduml

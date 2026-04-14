@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FirstTaskProj.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20260414131732_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20260414134107_fullCountryView")]
+    partial class fullCountryView
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -45,7 +45,7 @@ namespace FirstTaskProj.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("CoutnryId")
+                    b.Property<int>("CountryId")
                         .HasColumnType("int");
 
                     b.Property<int>("RegionId")

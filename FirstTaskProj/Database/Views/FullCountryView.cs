@@ -3,7 +3,7 @@
     public class FullCountryView
     {
         public int CityId { get; set; }
-        public int CoutnryId { get; set; }
+        public int CountryId { get; set; }
         public int RegionId { get; set; }
         public string RegionName { get; set; }
         public string CountryName { get; set; }
