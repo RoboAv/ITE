@@ -1,8 +1,10 @@
-﻿namespace FirstTaskProj.Models
+﻿using Microsoft.Identity.Client;
+
+namespace FirstTaskProj.Models
 {
     public class City : BaseModel
     {
-        public virtual Region Region { get; set; }
-        public int CityPopulation { get; set; }
+        public int RegionId { get; set; }
+        public required Region Region { get; set; }
     }
 }

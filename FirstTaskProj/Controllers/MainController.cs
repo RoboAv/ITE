@@ -1,82 +1,127 @@
-﻿using FirstTaskProj.Models;
-using FirstTaskProj.Repositories;
-using FirstTaskProj.Services;
+﻿using FirstTaskProj.Database;
+using FirstTaskProj.Database.Views;
+using FirstTaskProj.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace FirstTaskProj.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("/api/[controller]")]
     public class MainController : ControllerBase
     {
-        public IGrowPopulationService GrowPopulationService { get; set; }
-        public IBaseRepository<City> Cities { get; set; }
-        public MainController(IGrowPopulationService growPopulationService, IBaseRepository<City> cities) { 
-            GrowPopulationService = growPopulationService;
-            Cities = cities;
+        private readonly ApplicationContext _context;
+        public MainController(ApplicationContext context) {
+            _context = context;
         }
 
-        [HttpGet]
-        public JsonResult Get()
+        [HttpGet("city")]
+        public async Task<ActionResult<IEnumerable<City>>> GetCity()
         {
-            return new JsonResult(Cities.GetAll());
+
+            return await _context.Cities.ToListAsync();
         }
 
-        [HttpPost]
-        public JsonResult Post()
+        [HttpGet("region")]
+        public async Task<ActionResult<IEnumerable<Region>>> GetRegion()
         {
-            GrowPopulationService.GrowPopulation();
-            return new JsonResult(Cities.GetAll());
+
+            return await _context.Regions.ToListAsync();
         }
 
-        [HttpPut]
-        public JsonResult Put(City city)
+        [HttpGet("country")]
+        public async Task<ActionResult<IEnumerable<Country>>> GetCountry()
         {
-            bool success = true;
-            var toUpdate = Cities.Get(city.Id);
-
-            try
-            {
-                if (toUpdate != null)
-                {
-                    Cities.Update(toUpdate);
-                }
-                else
-                {
-                    success = false;
-                }
-            }
-            catch (Exception)
-            {
-                success = false;
-            }
-
-            return success ? new JsonResult("Put was successfull!") : new JsonResult("Put was unsuccessfull!");
+            return await _context.Countries.ToListAsync();
         }
 
-        [HttpDelete]
-        public JsonResult Delete(Guid id)
+        [HttpGet("country/all")]
+        public async Task<ActionResult<IEnumerable<Country>>> GetAllCountryView()
         {
-            bool success = true;
-            var toDelete = Cities.Get(id);
+            var data = await _context.Set<FullCountryView>().ToListAsync();
+            return Ok(data);
+        }
 
-            try
+        [HttpGet("{id}")]
+        public async Task<ActionResult<IEnumerable<City>>> Get(int id)
+        {
+            var city = await _context.Cities.FindAsync(id);
+            if (city == null)
             {
-                if (toDelete != null)
-                {
-                    Cities.Delete(toDelete.Id);
-                }
-                else
-                {
-                    success = false;
-                }
+                return NotFound();
             }
-            catch (Exception)
+            return Ok(city);
+        }
+
+        [HttpPost("{id}")]
+        public async Task<ActionResult<IEnumerable<City>>> Post(int id)
+        {
+            //return await _context.Cities.ToListAsync();
+            throw new NotImplementedException();
+        }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult<IEnumerable<City>>> Put(int id, City city)
+        {
+            var cityToDelete = await _context.Cities.FindAsync(id);
+
+            if (cityToDelete == null)
             {
-                success = false;
+                return NotFound();
             }
 
-            return success ? new JsonResult("Delete was successfull!") : new JsonResult("Delete was unsuccessfull!");
+            _context.Cities.Remove(cityToDelete);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
+
+        [HttpDelete("city/{id}")]
+        public async Task<ActionResult<IEnumerable<City>>> CityDelete(int id)
+        {
+            var cityToDelete = await _context.Cities.FindAsync(id);
+
+            if (cityToDelete == null)
+            {
+                return NotFound();
+            }
+
+            _context.Cities.Remove(cityToDelete);
+            await _context.SaveChangesAsync();
+
+            return Ok(cityToDelete);
+        }
+
+        [HttpDelete("/region/{id}")]
+        public async Task<ActionResult<IEnumerable<Region>>> RegionDelete(int id)
+        {
+            var regionToDelete = await _context.Regions.FindAsync(id);
+
+            if (regionToDelete == null)
+            {
+                return NotFound();
+            }
+
+            _context.Regions.Remove(regionToDelete);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
+
+        [HttpDelete("/country/{id}")]
+        public async Task<ActionResult<IEnumerable<Country>>> CountryDelete(int id)
+        {
+            var countryToDelete = await _context.Countries.FindAsync(id);
+
+            if (countryToDelete == null)
+            {
+                return NotFound();
+            }
+
+            _context.Countries.Remove(countryToDelete);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
         }
     }
 }

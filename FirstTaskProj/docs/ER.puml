@@ -2,40 +2,37 @@
 
 skinparam linetype ortho
 
-!define Table(name,desc) class name as "desc" << (T,#FFAAAA) >>
+' !define Table(name,desc) class name as "desc" << (T,#FFAAAA) >>
 !define primary_key(x) <b>PK</b>    x
 !define foreign_key(x) <b>FK</b>    x
+!define field(x) \t x
 !define not_null(x) <u>x</u>
 hide methods
 hide stereotypes
 
 entity "Country" {
-    primary_key(countryId) INTEGER
+    primary_key(Id) : int
     --
-    countryPopulation : Integer
-    countryBudget : Integer
-    countryLeader : string
+    field(Name) : varchar(10)
+    field(LeaderName) : varchar(10)
 }
 
 entity "Region" {
-    primary_key(regionId) : Integer
+    primary_key(Id) : int
     --
-    foreign_key(countryId) : Integer
-    regionPopulation : Integer
-    regionBudget : Integer
-    regionLeader : string
+    foreign_key(countryId) : int
+    field(Name) : varchar(10)
+    field(LeaderName) : varchar(10)
 }
 
 entity "City" {
-    primary_key(cityId) : Integer
+    primary_key(Id) : int
     --
-    foreign_key(regionId) : Integer
-    cityPopulation : Integer
-    cityBudget : Integer
-    cityLeader : string
+    foreign_key(regionId) : int
+    field(Name) : varchar(10)
+    field(LeaderName) : varchar(10)
 }
 
-' Country ||--|{ Country 
 Country ||--|{ Region
 
 Region  ||--|{ City

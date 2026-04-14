@@ -1,6 +1,6 @@
 @FirstTaskProj_HostAddress = http://localhost:5158
 
-GET {{FirstTaskProj_HostAddress}}/weatherforecast/
+GET {{FirstTaskProj_HostAddress}}/
 Accept: application/json
 
 ###

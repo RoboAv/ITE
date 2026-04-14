@@ -2,7 +2,8 @@
 {
     public class BaseModel
     {
-        public Guid Id { get; set; }
+        public int Id { get; set; }
         public string Name { get; set; }
+        public string LeaderName { get; set; }
     }
 }
