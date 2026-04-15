@@ -1,4 +1,4 @@
-﻿using FirstTaskProj.Tests;
+using FirstTaskProj.Tests;
 using FluentAssertions;
 using System.Net;
 using System.Net.Http.Json;
@@ -6,42 +6,13 @@ using System.Text;
 using System.Text.Json;
 using Xunit;
 
-public class MainControllerIntegrationTests : IClassFixture<SqlServerFixture>
+public class CountryControllerIntegrationTests : IClassFixture<SqlServerFixture>
 {
     private readonly SqlServerFixture _fixture;
-    public MainControllerIntegrationTests(SqlServerFixture fixture)
+
+    public CountryControllerIntegrationTests(SqlServerFixture fixture)
     {
         _fixture = fixture;
-    }
-
-    // Group 1: GET
-    [Fact]
-    public async Task GetCity_ShouldReturnSeededCities_AndOk()
-    {
-        using var factory = new CustomWebApplicationFactory(_fixture.CreateDatabaseConnectionString());
-        using var client = factory.CreateClient();
-
-        var response = await client.GetAsync("/api/Main/city");
-        response.StatusCode.Should().Be(HttpStatusCode.OK);
-        var cities = await response.Content.ReadFromJsonAsync<List<CityDto>>();
-
-        cities.Should().NotBeNull();
-        cities.Should().HaveCountGreaterThanOrEqualTo(2);
-        cities!.Select(x => x.Name).Should().Contain(new[] { "Region of 17", "Region of 18" });
-    }
-
-    [Fact]
-    public async Task GetRegion_ShouldReturnSeededRegions_AndOk()
-    {
-        using var factory = new CustomWebApplicationFactory(_fixture.CreateDatabaseConnectionString());
-        using var client = factory.CreateClient();
-
-        var response = await client.GetAsync("/api/Main/region");
-        response.StatusCode.Should().Be(HttpStatusCode.OK);
-        var regions = await response.Content.ReadFromJsonAsync<List<RegionDto>>();
-
-        regions.Should().NotBeNull();
-        regions.Should().HaveCountGreaterThanOrEqualTo(2);
     }
 
     [Fact]
@@ -50,7 +21,7 @@ public class MainControllerIntegrationTests : IClassFixture<SqlServerFixture>
         using var factory = new CustomWebApplicationFactory(_fixture.CreateDatabaseConnectionString());
         using var client = factory.CreateClient();
 
-        var response = await client.GetAsync("/api/Main/country");
+        var response = await client.GetAsync("/api/Country");
         response.StatusCode.Should().Be(HttpStatusCode.OK);
         var countries = await response.Content.ReadFromJsonAsync<List<CountryDto>>();
 
@@ -60,12 +31,30 @@ public class MainControllerIntegrationTests : IClassFixture<SqlServerFixture>
     }
 
     [Fact]
+    public async Task GetCountryById_ShouldReturnExistingCountry_AndOk()
+    {
+        using var factory = new CustomWebApplicationFactory(_fixture.CreateDatabaseConnectionString());
+        using var client = factory.CreateClient();
+
+        var countries = await client.GetFromJsonAsync<List<CountryDto>>("/api/Country");
+        var existingCountry = countries!.First();
+
+        var response = await client.GetAsync($"/api/Country/{existingCountry.Id}");
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
+
+        var country = await response.Content.ReadFromJsonAsync<CountryDto>();
+        country.Should().NotBeNull();
+        country!.Id.Should().Be(existingCountry.Id);
+        country.Name.Should().Be(existingCountry.Name);
+    }
+
+    [Fact]
     public async Task GetFullCountryView_ShouldReturnData_AndOk()
     {
         using var factory = new CustomWebApplicationFactory(_fixture.CreateDatabaseConnectionString());
         using var client = factory.CreateClient();
 
-        var response = await client.GetAsync("/api/Main/country/all");
+        var response = await client.GetAsync("/api/Country/all");
         response.StatusCode.Should().Be(HttpStatusCode.OK);
         var rows = await response.Content.ReadFromJsonAsync<List<FullCountryViewDto>>();
 
@@ -79,7 +68,7 @@ public class MainControllerIntegrationTests : IClassFixture<SqlServerFixture>
         using var factory = new CustomWebApplicationFactory(_fixture.CreateDatabaseConnectionString());
         using var client = factory.CreateClient();
 
-        var response = await client.GetAsync("/api/Main/country/allPag?page=1&pageSize=1");
+        var response = await client.GetAsync("/api/Country/allPag?page=1&pageSize=1");
         response.StatusCode.Should().Be(HttpStatusCode.OK);
 
         using var json = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
@@ -89,14 +78,13 @@ public class MainControllerIntegrationTests : IClassFixture<SqlServerFixture>
         json.RootElement.GetProperty("data").GetArrayLength().Should().Be(1);
     }
 
-    // Group 2: PUT
     [Fact]
     public async Task PutCountry_ShouldUpdateExistingCountry_AndReturnOk()
     {
         using var factory = new CustomWebApplicationFactory(_fixture.CreateDatabaseConnectionString());
         using var client = factory.CreateClient();
 
-        var countries = await client.GetFromJsonAsync<List<CountryDto>>("/api/Main/country");
+        var countries = await client.GetFromJsonAsync<List<CountryDto>>("/api/Country");
         var countryToUpdate = countries!.First();
 
         var payload = new
@@ -106,10 +94,10 @@ public class MainControllerIntegrationTests : IClassFixture<SqlServerFixture>
             LeaderName = "Updated leader",
         };
 
-        var putResponse = await client.PutAsJsonAsync("/api/Main/country", payload);
+        var putResponse = await client.PutAsJsonAsync("/api/Country", payload);
         putResponse.StatusCode.Should().Be(HttpStatusCode.OK);
 
-        var updatedCountries = await client.GetFromJsonAsync<List<CountryDto>>("/api/Main/country");
+        var updatedCountries = await client.GetFromJsonAsync<List<CountryDto>>("/api/Country");
         updatedCountries.Should().ContainSingle(x =>
             x.Id == countryToUpdate.Id &&
             x.Name == "Updated country" &&
@@ -117,40 +105,22 @@ public class MainControllerIntegrationTests : IClassFixture<SqlServerFixture>
     }
 
     [Fact]
-    public async Task PutCity_ShouldReturnNotFound_ForUnknownId()
+    public async Task PutCountry_ShouldReturnNotFound_ForUnknownId()
     {
         using var factory = new CustomWebApplicationFactory(_fixture.CreateDatabaseConnectionString());
         using var client = factory.CreateClient();
 
-        var regions = await client.GetFromJsonAsync<List<RegionDto>>("/api/Main/region");
-        var firstRegion = regions!.First();
-
         var payload = new
         {
             Id = -1,
-            Name = "Ghost city",
-            LeaderName = "Ghost leader",
-            RegionId = firstRegion.Id,
-            Region = new
-            {
-                Id = firstRegion.Id,
-                Name = firstRegion.Name,
-                LeaderName = firstRegion.LeaderName,
-                CountryId = firstRegion.CountryId,
-                Country = new
-                {
-                    Id = 1,
-                    Name = "Alliance",
-                    LeaderName = "Walles"
-                }
-            }
+            Name = "Ghost country",
+            LeaderName = "Ghost leader"
         };
 
-        var response = await client.PutAsJsonAsync("/api/Main/city", payload);
+        var response = await client.PutAsJsonAsync("/api/Country", payload);
         response.StatusCode.Should().Be(HttpStatusCode.NotFound);
     }
 
-    // Group 3: POST
     [Fact]
     public async Task PostCountry_ShouldPersistCountry_InSqlServer_AndReturnOk()
     {
@@ -163,10 +133,10 @@ public class MainControllerIntegrationTests : IClassFixture<SqlServerFixture>
             LeaderName = "Leader X"
         };
 
-        var response = await client.PostAsJsonAsync("/api/Main/country", country);
+        var response = await client.PostAsJsonAsync("/api/Country", country);
         response.StatusCode.Should().Be(HttpStatusCode.OK);
 
-        var countries = await client.GetFromJsonAsync<List<CountryDto>>("/api/Main/country");
+        var countries = await client.GetFromJsonAsync<List<CountryDto>>("/api/Country");
         countries.Should().ContainSingle(x =>
             x.Name == "Testland" &&
             x.LeaderName == "Leader X");
@@ -179,46 +149,27 @@ public class MainControllerIntegrationTests : IClassFixture<SqlServerFixture>
         using var client = factory.CreateClient();
 
         using var content = new StringContent("null", Encoding.UTF8, "application/json");
-        var response = await client.PostAsync("/api/Main/country", content);
+        var response = await client.PostAsync("/api/Country", content);
 
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
     }
 
-    // Group 4: DELETE
     [Fact]
-    public async Task DeleteCity_ShouldRemoveCity_AndReturnOk()
+    public async Task DeleteCountry_ShouldRemoveCountry_AndReturnOk()
     {
         using var factory = new CustomWebApplicationFactory(_fixture.CreateDatabaseConnectionString());
         using var client = factory.CreateClient();
 
-        var cities = await client.GetFromJsonAsync<List<CityDto>>("/api/Main/city");
-        var cityToDelete = cities!.First();
+        var regions = await client.GetFromJsonAsync<List<RegionDto>>("/api/Region");
+        var countries = await client.GetFromJsonAsync<List<CountryDto>>("/api/Country");
+        var countryIdsWithRegions = regions!.Select(r => r.CountryId).ToHashSet();
+        var countryToDelete = countries!.First(c => !countryIdsWithRegions.Contains(c.Id));
 
-        var deleteResponse = await client.DeleteAsync($"/api/Main/city/{cityToDelete.Id}");
+        var deleteResponse = await client.DeleteAsync($"/api/Country/{countryToDelete.Id}");
         deleteResponse.StatusCode.Should().Be(HttpStatusCode.OK);
 
-        var remainingCities = await client.GetFromJsonAsync<List<CityDto>>("/api/Main/city");
-        remainingCities.Should().NotContain(x => x.Id == cityToDelete.Id);
-    }
-
-    [Fact]
-    public async Task DeleteCity_ShouldReturnNotFound_ForUnknownId()
-    {
-        using var factory = new CustomWebApplicationFactory(_fixture.CreateDatabaseConnectionString());
-        using var client = factory.CreateClient();
-
-        var response = await client.DeleteAsync("/api/Main/city/-1");
-        response.StatusCode.Should().Be(HttpStatusCode.NotFound);
-    }
-
-    [Fact]
-    public async Task DeleteRegion_ShouldReturnNotFound_ForUnknownId()
-    {
-        using var factory = new CustomWebApplicationFactory(_fixture.CreateDatabaseConnectionString());
-        using var client = factory.CreateClient();
-
-        var response = await client.DeleteAsync("/api/Main/region/-1");
-        response.StatusCode.Should().Be(HttpStatusCode.NotFound);
+        var remainingCountries = await client.GetFromJsonAsync<List<CountryDto>>("/api/Country");
+        remainingCountries.Should().NotContain(c => c.Id == countryToDelete.Id);
     }
 
     [Fact]
@@ -227,13 +178,12 @@ public class MainControllerIntegrationTests : IClassFixture<SqlServerFixture>
         using var factory = new CustomWebApplicationFactory(_fixture.CreateDatabaseConnectionString());
         using var client = factory.CreateClient();
 
-        var response = await client.DeleteAsync("/api/Main/country/-1");
+        var response = await client.DeleteAsync("/api/Country/-1");
         response.StatusCode.Should().Be(HttpStatusCode.NotFound);
     }
 
-    private sealed record CityDto(int Id, string Name, string LeaderName, int RegionId);
-    private sealed record RegionDto(int Id, string Name, string LeaderName, int CountryId);
     private sealed record CountryDto(int Id, string Name, string LeaderName);
+    private sealed record RegionDto(int Id, string Name, string LeaderName, int CountryId);
     private sealed record FullCountryViewDto(
         int? CityId,
         int CountryId,
