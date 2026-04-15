@@ -42,42 +42,100 @@ namespace FirstTaskProj.Controllers
             return Ok(data);
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<IEnumerable<City>>> Get(int id)
+        [HttpGet("country/allPag")]
+        public async Task<ActionResult<IEnumerable<Country>>> GetAllPagination(int page = 1, int pageSize = 10)
         {
-            var city = await _context.Cities.FindAsync(id);
-            if (city == null)
+            var query = _context.Set<FullCountryView>();
+
+            var totalCount = await query.CountAsync();
+
+            var data = await query.Skip((page - 1) * pageSize).Take(pageSize).ToArrayAsync();
+            return Ok(new
+            {
+                page,
+                pageSize,
+                totalCount,
+                data
+            });
+        }
+
+        [HttpPut("city/{id}")]
+        public async Task<ActionResult<IEnumerable<City>>> PutCity (int id, City newCity)
+        {
+            var cityToReplace = await _context.Cities.FindAsync(id);
+
+            if (cityToReplace == null)
             {
                 return NotFound();
             }
-            return Ok(city);
-        }
 
-        [HttpPost("{id}")]
-        public async Task<ActionResult<IEnumerable<City>>> Post(int id)
-        {
-            //return await _context.Cities.ToListAsync();
-            throw new NotImplementedException();
-        }
-
-        [HttpPut("{id}")]
-        public async Task<ActionResult<IEnumerable<City>>> Put(int id, City city)
-        {
-            var cityToDelete = await _context.Cities.FindAsync(id);
-
-            if (cityToDelete == null)
-            {
-                return NotFound();
-            }
-
-            _context.Cities.Remove(cityToDelete);
+            _context.Cities.Remove(cityToReplace);
+            _context.Cities.Add(newCity);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
+        [HttpPut("region/{id}")]
+        public async Task<ActionResult<IEnumerable<Region>>> PutRegion (int id, Region newRegion)
+        {
+            var regionToReplace = await _context.Regions.FindAsync(id);
+
+            if (regionToReplace == null)
+            {
+                return NotFound();
+            }
+
+            _context.Regions.Remove(regionToReplace);
+            _context.Regions.Add(newRegion);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
+
+        [HttpPut("country/{id}")]
+        public async Task<ActionResult<IEnumerable<Country>>> PutCountry (int id, Country newCountry)
+        {
+            var countryToReplace = await _context.Countries.FindAsync(id);
+
+            if (countryToReplace == null)
+            {
+                return NotFound();
+            }
+
+            _context.Countries.Remove(countryToReplace);
+            _context.Countries.Add(newCountry);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
+
+        [HttpPost("city")]
+        public async Task<ActionResult<IEnumerable<City>>> PostCity (City newCity)
+        {
+            _context.Cities.Add(newCity);
+            await _context.SaveChangesAsync();
+            return Ok(newCity);
+        }
+
+        [HttpPost("region")]
+        public async Task<ActionResult<IEnumerable<Region>>> PostCity (Region newRegion)
+        {
+            _context.Regions.Add(newRegion);
+            await _context.SaveChangesAsync();
+            return Ok(newRegion);
+        }
+
+        [HttpPost("country")]
+        public async Task<ActionResult<IEnumerable<Country>>> PostCountry (Country newCountry)
+        {
+            _context.Countries.Add(newCountry);
+            await _context.SaveChangesAsync();
+            return Ok(newCountry);
+        }
+
         [HttpDelete("city/{id}")]
-        public async Task<ActionResult<IEnumerable<City>>> CityDelete(int id)
+        public async Task<ActionResult<IEnumerable<City>>> DeleteCity (int id)
         {
             var cityToDelete = await _context.Cities.FindAsync(id);
 
@@ -93,7 +151,7 @@ namespace FirstTaskProj.Controllers
         }
 
         [HttpDelete("/region/{id}")]
-        public async Task<ActionResult<IEnumerable<Region>>> RegionDelete(int id)
+        public async Task<ActionResult<IEnumerable<Region>>> DeleteRegion (int id)
         {
             var regionToDelete = await _context.Regions.FindAsync(id);
 
@@ -105,11 +163,11 @@ namespace FirstTaskProj.Controllers
             _context.Regions.Remove(regionToDelete);
             await _context.SaveChangesAsync();
 
-            return NoContent();
+            return Ok(regionToDelete);
         }
 
         [HttpDelete("/country/{id}")]
-        public async Task<ActionResult<IEnumerable<Country>>> CountryDelete(int id)
+        public async Task<ActionResult<IEnumerable<Country>>> DeleteCountry (int id)
         {
             var countryToDelete = await _context.Countries.FindAsync(id);
 
@@ -121,7 +179,7 @@ namespace FirstTaskProj.Controllers
             _context.Countries.Remove(countryToDelete);
             await _context.SaveChangesAsync();
 
-            return NoContent();
+            return Ok(countryToDelete);
         }
     }
 }

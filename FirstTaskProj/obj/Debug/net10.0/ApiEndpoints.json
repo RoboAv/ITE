@@ -1,89 +1,6 @@
 [
   {
     "ContainingType": "FirstTaskProj.Controllers.MainController",
-    "Method": "Get",
-    "RelativePath": "api/Main/{id}",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.Int32",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "System.Collections.Generic.IEnumerable\u00601[[FirstTaskProj.Models.City, FirstTaskProj, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "FirstTaskProj.Controllers.MainController",
-    "Method": "Post",
-    "RelativePath": "api/Main/{id}",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.Int32",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "System.Collections.Generic.IEnumerable\u00601[[FirstTaskProj.Models.City, FirstTaskProj, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "FirstTaskProj.Controllers.MainController",
-    "Method": "Put",
-    "RelativePath": "api/Main/{id}",
-    "HttpMethod": "PUT",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.Int32",
-        "IsRequired": true
-      },
-      {
-        "Name": "city",
-        "Type": "FirstTaskProj.Models.City",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "System.Collections.Generic.IEnumerable\u00601[[FirstTaskProj.Models.City, FirstTaskProj, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "FirstTaskProj.Controllers.MainController",
     "Method": "GetCity",
     "RelativePath": "api/Main/city",
     "HttpMethod": "GET",
@@ -104,7 +21,64 @@
   },
   {
     "ContainingType": "FirstTaskProj.Controllers.MainController",
-    "Method": "CityDelete",
+    "Method": "PostCity",
+    "RelativePath": "api/Main/city",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "newCity",
+        "Type": "FirstTaskProj.Models.City",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[FirstTaskProj.Models.City, FirstTaskProj, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "FirstTaskProj.Controllers.MainController",
+    "Method": "PutCity",
+    "RelativePath": "api/Main/city/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "newCity",
+        "Type": "FirstTaskProj.Models.City",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[FirstTaskProj.Models.City, FirstTaskProj, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "FirstTaskProj.Controllers.MainController",
+    "Method": "DeleteCity",
     "RelativePath": "api/Main/city/{id}",
     "HttpMethod": "DELETE",
     "IsController": true,
@@ -150,12 +124,100 @@
   },
   {
     "ContainingType": "FirstTaskProj.Controllers.MainController",
+    "Method": "PostCountry",
+    "RelativePath": "api/Main/country",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "newCountry",
+        "Type": "FirstTaskProj.Models.Country",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[FirstTaskProj.Models.Country, FirstTaskProj, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "FirstTaskProj.Controllers.MainController",
+    "Method": "PutCountry",
+    "RelativePath": "api/Main/country/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "newCountry",
+        "Type": "FirstTaskProj.Models.Country",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[FirstTaskProj.Models.Country, FirstTaskProj, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "FirstTaskProj.Controllers.MainController",
     "Method": "GetAllCountryView",
     "RelativePath": "api/Main/country/all",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
     "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[FirstTaskProj.Models.Country, FirstTaskProj, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "FirstTaskProj.Controllers.MainController",
+    "Method": "GetAllPagination",
+    "RelativePath": "api/Main/country/allPag",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "page",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "pageSize",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
     "ReturnTypes": [
       {
         "Type": "System.Collections.Generic.IEnumerable\u00601[[FirstTaskProj.Models.Country, FirstTaskProj, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
@@ -190,7 +252,64 @@
   },
   {
     "ContainingType": "FirstTaskProj.Controllers.MainController",
-    "Method": "CountryDelete",
+    "Method": "PostCity",
+    "RelativePath": "api/Main/region",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "newRegion",
+        "Type": "FirstTaskProj.Models.Region",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[FirstTaskProj.Models.Region, FirstTaskProj, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "FirstTaskProj.Controllers.MainController",
+    "Method": "PutRegion",
+    "RelativePath": "api/Main/region/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "newRegion",
+        "Type": "FirstTaskProj.Models.Region",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[FirstTaskProj.Models.Region, FirstTaskProj, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "FirstTaskProj.Controllers.MainController",
+    "Method": "DeleteCountry",
     "RelativePath": "country/{id}",
     "HttpMethod": "DELETE",
     "IsController": true,
@@ -216,7 +335,7 @@
   },
   {
     "ContainingType": "FirstTaskProj.Controllers.MainController",
-    "Method": "RegionDelete",
+    "Method": "DeleteRegion",
     "RelativePath": "region/{id}",
     "HttpMethod": "DELETE",
     "IsController": true,

@@ -33,8 +33,8 @@ namespace FirstTaskProj.Database.Seeder
             List<Country> countries = context.Countries.ToList();
             List<Region> regions = new List<Region>();
             regions.AddRange(
-                new Region { Name = "Region of 17", LeaderName = "Walles", CountryId = countries[0].Id, Country = countries[0] },
-                new Region { Name = "Region of 18", LeaderName = "Elija", CountryId = countries[0].Id, Country = countries[1] }
+                new Region { Name = "Region of 17", LeaderName = "Walles", CountryId = countries[0].Id},
+                new Region { Name = "Region of 18", LeaderName = "Elija", CountryId = countries[0].Id}
             );
 
             for (int i = 0; i < regions.Count; i++)
@@ -57,8 +57,8 @@ namespace FirstTaskProj.Database.Seeder
             List<City> cities = new List<City>();
 
             cities.AddRange(
-                new City { Name = "Region of 17", LeaderName = "Walles", RegionId = regions[0].Id, Region = regions[0] },
-                new City { Name = "Region of 18", LeaderName = "Elija", RegionId = regions[0].Id, Region = regions[1] }
+                new City { Name = "Region of 17", LeaderName = "Walles", RegionId = regions[0].Id},
+                new City { Name = "Region of 18", LeaderName = "Elija", RegionId = regions[0].Id}
             );
 
             for (int i = 0; i < cities.Count; i++)

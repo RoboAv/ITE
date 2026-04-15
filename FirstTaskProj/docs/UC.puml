@@ -1,24 +1,65 @@
-@startuml
+@startuml UCD
 
+skinparam linetype ortho
 left to right direction
-
 
 actor User as user
 
 package API {
-    usecase get as "
-    GET /api/Main/{modele}
-    ..
-    GET request that returns all objects of {modele}.
-    " 
-    usecase getId as "
-    GET /api/Main/{modele}/{id}
-    ..
-    GET request that returns an object of {modele} by {id}.
-    "
+    package GET {
+        usecase get as "
+        Get all objects of any model
+        ..
+        GET /api/Main/{model}
+        " 
+
+        usecase getId as "
+        Get an object of {model} by {id}.
+        ..
+        GET /api/Main/{model}/{id}
+        "
+
+        usecase getAllView as "
+        Gets all by view
+        ..
+        GET /api/Main/country/all
+        "
+
+        usecase getAllPagination as "
+        Gets all by pagination
+        ..
+        GET /api/Main/country/allPag?page={a}&pageSize={b}
+        "
+    }
+
+    package PUT {
+        usecase put as "
+        Replaces one {model} with new {objectOfModel} by {id} 
+        ..
+        PUT /api/Main/{model}/{id} {objectOfModel}
+        "
+    }
+
+    package POST {
+        usecase post as "
+        Inserts one {objectOfModel}
+        ..
+        POST /api/Main/{model} {objectOfModel}
+        "
+    }
+
+    package DELETE {
+        usecase delete as "
+        Deletes one object of {model} by {id}
+        ..
+        DELETE /api/Main/{model}/{id}
+        " 
+    }
 }
 
-user --> get
-user --> getId
+user --> GET
+user --> DELETE
+user --> PUT
+user --> POST
 
 @enduml
