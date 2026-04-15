@@ -5,6 +5,6 @@ namespace FirstTaskProj.Models
     public class City : BaseModel
     {
         public int RegionId { get; set; }
-        //public required Region Region { get; set; }
+        public virtual Region? Region { get; set; }
     }
 }

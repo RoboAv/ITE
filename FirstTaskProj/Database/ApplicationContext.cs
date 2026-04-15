@@ -18,28 +18,6 @@ namespace FirstTaskProj.Database
                 .ToView("FullCountryView");
         }
 
-        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        //    => optionsBuilder
-        //        .UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=EFDataSeeding;Trusted_Connection=True;ConnectRetryCount=0")
-        //        .UseSeeding((context, _) =>
-        //        {
-        //            var testBlog = context.Set<City>().FirstOrDefault(b => b.Name == "City 17");
-        //            if (testBlog == null)
-        //            {
-        //                context.Set<Blog>().Add(new Blog { Url = "http://test.com" });
-        //                context.SaveChanges();
-        //            }
-        //        })
-        //        .UseAsyncSeeding(async (context, _, cancellationToken) =>
-        //        {
-        //            var testBlog = await context.Set<Blog>().FirstOrDefaultAsync(b => b.Url == "http://test.com", cancellationToken);
-        //            if (testBlog == null)
-        //            {
-        //                context.Set<Blog>().Add(new Blog { Url = "http://test.com" });
-        //                await context.SaveChangesAsync(cancellationToken);
-        //            }
-        //        });
-
         public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options)
         {
             //Database.EnsureDeleted();

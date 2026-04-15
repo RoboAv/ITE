@@ -45,9 +45,6 @@ namespace FirstTaskProj.Database.Seeder
         }
         private static void SeedCities (ApplicationContext context)
         {
-
-
-
             if (context.Cities.Any())
             {
                 return;

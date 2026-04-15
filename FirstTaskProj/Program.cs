@@ -1,14 +1,19 @@
 using FirstTaskProj.Database;
 using Microsoft.EntityFrameworkCore;
 using FirstTaskProj.Database.Seeder;
+using FirstTaskProj;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddDbContext<ApplicationContext>(options =>
+var services = builder.Services.AddDbContext<ApplicationContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
         .LogTo(Console.WriteLine, LogLevel.Information)
         .EnableSensitiveDataLogging()
     );
+
+services.AddMvc(options => options.EnableEndpointRouting = false);
+
+services.AddSwaggerGen();
 
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
@@ -48,5 +53,21 @@ using (var scope = app.Services.CreateScope())
     DbSeeder.Seed(context);
 }
 
+app.UseSwagger()
+               .UseSwaggerUI(c =>
+               {
+                   c.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+               });
+
+app.UseMvc(
+    routes =>
+    {
+        routes.MapRoute(
+            name: "default",
+            template: "/{controller=Home}/{action=Index}/{id?}");
+    }
+);
+
+//app.UseSwaggerUi();
 
 app.Run();
